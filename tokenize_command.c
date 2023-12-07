@@ -3,22 +3,37 @@
 /**
 * tokenize_command - tokenizes the command line argument
 * @command: pointer to the input command
-* @arg_count: number of arguments typed by the user
+* @delim: set of bytes that delimit the tokens in the parsed string
 * Return: pointer to tokenized string
 */
 
-char **tokenize_command(char *command, int arg_count)
+char **tokenize_command(char *command, const char *delim)
 {
-char **tokens = malloc(arg_count * sizeof(char *));
+char **tokens;
 char *token;
 int token_count = 0;
 
-token = strtok(command, " ");
+tokens = malloc(1024 * sizeof(char *));
+if (tokens == NULL)
+{
+perror("malloc");
+exit(EXIT_FAILURE);
+}
+
+token = strtok(command, delim);
 while (token != NULL)
 {
-/*save tokens*/
-tokens[token_count++] = strdup(token);
-token = strtok(NULL, " ");
+/*save a copy of the token*/
+tokens[token_count] = strdup(token);
+
+if (tokens[token_count] == NULL)
+{
+perror("strdup");
+exit(EXIT_FAILURE);
+}
+
+token_count++;
+token = strtok(NULL, delim);
 }
 tokens[token_count] = NULL;
 

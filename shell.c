@@ -2,30 +2,41 @@
 
 /**
 * main - entry point for the shell project
-* @ac: number of arguments
-* @av: command-line arguments
-* @env: environment variables of the current program
 * Return: 0
 */
 
-int main(int ac, char **av, char **env)
+int main(void)
 {
-char *line_command;
+char *line_command, *get_path_variable;
+const char *file_path;
 char **command_tokens = NULL;
+char **directory_tokens = NULL;
 
 while (true)
 {
 show_prompt();
-line_command = receive_input(*av);
+line_command = receive_input();
 if (line_command == NULL)
 {
 free(line_command);
 break;
 }
-command_tokens = tokenize_command(line_command, ac);
-execute_command(command_tokens, env);
+command_tokens = tokenize_command(line_command, " ");
+get_path_variable = _getenv("PATH");
+directory_tokens = tokenize_command(get_path_variable, ":");
+file_path = search_path(command_tokens[0], *directory_tokens);
+if (file_path != NULL)
+{
+execute_command(command_tokens, file_path);
 }
-free(command_tokens);
+else
+{
+printf("Error: command not found\n");
+}
+}
+free_tokens(command_tokens);
+free_tokens(directory_tokens);
 free(line_command);
 return (0);
 }
+
