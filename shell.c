@@ -11,6 +11,7 @@ char *line_command, *get_path_variable;
 const char *file_path;
 char **command_tokens = NULL;
 char **directory_tokens = NULL;
+int i;
 
 while (true)
 {
@@ -24,6 +25,11 @@ break;
 command_tokens = tokenize_command(line_command, " ");
 get_path_variable = _getenv("PATH");
 directory_tokens = tokenize_command(get_path_variable, ":");
+for (i = 0; directory_tokens[i] != NULL; i++)
+{
+printf("directory_tokens %d: %s\n", i, directory_tokens[i]);
+}
+
 file_path = search_path(command_tokens[0], *directory_tokens);
 if (file_path != NULL)
 {
