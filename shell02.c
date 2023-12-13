@@ -1,31 +1,30 @@
 #include "main.h"
 #include <string.h>
 
-int main()
+int main(int argc, char **argv, char **envp)
 {
-	extern char **environ;
-
 	char *argv[] = {"ls", "-la", NULL};
 	int i;
 
-	for (i = 0; environ[i] != NULL; i++)
+	for (i = 0; envp[i] != NULL; i++)
 	{
-		if(strncmp(environ[i], "PATH", 4) == 0)
+		if (strncmp(envp[i], "PATH", 4) == 0)
 		{
-			printf("%s",environ[i]);
+			printf("%s", envp[i]);
 		}
-		//printf("%s\n", environ[i]);
+		/*printf("%s\n", environ[i]);*/
 	}
-	
-	
-	
-	
-	/* printf("initial execution\n");
-	if (execve("/usr/bin/ls", argv, NULL) == -1)
-	{
-		perror("Error:");
-	}
-	printf("Final execution\n");
-	return (0);*/
+
+	/*printf("initial execution\n");*/
+	/*
+	 * if (execve("/usr/bin/ls", argv, NULL) == -1)
+	 * {
+	 *	perror("Error:");
+	 * }
+	*/
+	/*
+	 * printf("Final execution\n");
+	 * return (0);
+	 */
 
 }
